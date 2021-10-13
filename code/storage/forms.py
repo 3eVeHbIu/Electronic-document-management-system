@@ -16,6 +16,7 @@ class UserForm(forms.ModelForm):
                                widget=forms.widgets.TextInput(attrs={'placeholder': 'Ivan',
                                                                      'class': 'form-control'}))
     email = forms.EmailField(label='Email',
+                             error_messages={'invalid': 'Введите корректный email'},
                              widget=forms.widgets.EmailInput(attrs={'placeholder': 'ivan@mail.com',
                                                                     'class': 'form-control'}))
     first_name = forms.CharField(label='Имя',
@@ -47,9 +48,10 @@ class UserForm(forms.ModelForm):
         errors = {}
         if self.cleaned_data['password1'] != self.cleaned_data['password2']:
             errors['password1'] = ValidationError('Пароли не совпадают')
-        if User.objects.filter(email=self.cleaned_data['email']):
-            errors['email'] = ValidationError('Email уже занят')
-        if User.objects.filter(username=self.cleaned_data['username']):
-            errors['email'] = ValidationError('Имя пользователя уже занято')
+        if 'email' in self.cleaned_data:
+            if User.objects.filter(email=self.cleaned_data['email']):
+                errors['email'] = ValidationError('Email уже занят')
+            if User.objects.filter(username=self.cleaned_data['username']):
+                errors['username'] = ValidationError('Имя пользователя уже занято')
         if errors:
             raise ValidationError(errors)

@@ -11,20 +11,6 @@
                     <a href="{% url 'index' %}" class="nav-link">Главная</a>
                 </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
-                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Новости
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            {% for theme in themes %}
-                                <a href="{% url 'by_theme' theme.pk %}" class="dropdown-item">{{ theme.name }}</a>
-                            {% endfor %}
-                            <div class="dropdown-divider"></div>
-                            <a href="{% url 'my_news' user %}" class="dropdown-item">Мои новости</a>
-                            <a href="{% url 'create' %}" class="dropdown-item">Создать</a>
-                        </div>
-                    </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" class="nav-link">Выйти</a>
                     </li>

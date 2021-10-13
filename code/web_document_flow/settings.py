@@ -4,7 +4,9 @@ import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'django.nginx',
+]
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,8 +74,8 @@ MEDIA_URL = '/media/'
 SECRET_KEY = config.secret
 # SECURE_PROXY_SSL_HEADER = None
 # SECURE_SSL_REDIRECT = True
-# SESSION_COOKIE_SECURE = True
-# CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 AUTH_PASSWORD_VALIDATORS = [
     {
