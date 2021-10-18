@@ -7,14 +7,19 @@ services:
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=django
-      - POSTGRES_USER=django-user
-      - POSTGRES_PASSWORD=Qq123456!
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./code:/code
+      - ./data/files:/code/files
+    environment: # read about secrets
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       - db
   proxy:

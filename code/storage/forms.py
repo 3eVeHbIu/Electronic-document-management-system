@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core import validators
 from django.core.exceptions import ValidationError
 
+from .models import Files
+
 
 class UserForm(forms.ModelForm):
     error_css_class = 'is-invalid'
@@ -55,3 +57,26 @@ class UserForm(forms.ModelForm):
                 errors['username'] = ValidationError('Имя пользователя уже занято')
         if errors:
             raise ValidationError(errors)
+
+
+class FileForm(forms.ModelForm):
+    field_order = ('file', 'is_private')
+    file = forms.FileField(
+        label='Выберите файл',
+        help_text='Можно загрузить только doc/docs',
+        validators=[
+            validators.FileExtensionValidator(allowed_extensions=('doc', 'docs')),
+            validators.ProhibitNullCharactersValidator()
+        ],
+        error_messages={
+            'invalid_extension': 'Этот формат не поддерживается'
+        }
+    )
+    is_private = forms.BooleanField(
+        label='Приватный',
+        required=False,
+    )
+
+    class Meta:
+        model = Files
+        fields = ('file', 'is_private')

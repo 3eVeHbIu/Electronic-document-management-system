@@ -2,11 +2,13 @@ from pathlib import Path
 
 import config
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
 ALLOWED_HOSTS = [
     'django.nginx',
 ]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -66,9 +68,11 @@ STATICFILES_DIRS = [
 ]
 
 # Media files
-MEDIA_ROOT = [BASE_DIR / 'media']
-MEDIA_URL = '/media/'
-# FILE_UPLOAD_TEMP_DIR = 5242880
+MEDIA_ROOT = BASE_DIR / 'files/doc'
+MEDIA_URL = '/files/'
+FILE_UPLOAD_MAX_MEMORY_SIZE = 2621440
+# FILE_UPLOAD_PERMISSIONS =
+# FILE_UPLOAD_TEMP_DIR = BASE_DIR / 'files/doc'
 
 # Security
 SECRET_KEY = config.secret

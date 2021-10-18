@@ -1,0 +1,39 @@
+{% extends "includes/wrapper.html" %}
+{% block title %}Создание новости{% endblock title %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col">
+                <div class="mb-3">
+                    <h2 class="text-center">Страница загрузки файла</h2>
+                </div>
+                <form method="POST" action="{% url 'file_upload' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col"> {{ field.label_tag }}</div>
+                                <div class="col-5 text-right">
+                                    {% if field.help_text %}
+                                        <small>{{ field.help_text }}</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="alert alert-danger mt-1">
+                                    {% for err in field.errors %}
+                                        {{ err }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <input class="btn btn-secondary" type="submit" value="Создать">
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
