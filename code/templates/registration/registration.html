@@ -8,25 +8,25 @@
             {% endfor %}
         </script>
     {% endif %}
-        <div class="col-2"></div>
-       <div class="col alert alert-secondary">
-                <form method="POST" action="{% url 'registration' %}">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        <div class="form-group">
-                            {{ field.label_tag }}
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="alert alert-danger mt-1">
-                                    {% for err in field.errors %}
-                                        {{ err }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+    <div class="col-2"></div>
+    <div class="col alert alert-secondary">
+        <form method="POST" action="{% url 'registration' %}">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="alert alert-danger mt-1">
+                            {% for err in field.errors %}
+                                {{ err }}
+                            {% endfor %}
                         </div>
-                    {% endfor %}
-                    <input class="btn btn-secondary mt-2" type="submit" value="Регистрация">  
-                </form>
-        </div>
-        <div class="col-2"></div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input class="btn btn-secondary mt-2" type="submit" value="Регистрация">
+        </form>
+    </div>
+    <div class="col-2"></div>
 {% endblock %}

@@ -22,7 +22,7 @@ class Themes(models.Model):
         return self.name
 
 
-def get_timestamp_path(filename):
+def get_timestamp_path(instance, filename):
     return '%s%s' % (datetime.now().timestamp(), splitext(filename)[1])
 
 
@@ -49,6 +49,7 @@ class Files(models.Model):
         }
     )
     file = models.FileField(
+        default=None,
         verbose_name='Файл',
         upload_to=get_timestamp_path,
         blank=False,

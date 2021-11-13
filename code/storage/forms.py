@@ -9,41 +9,69 @@ from .models import Files
 class UserForm(forms.ModelForm):
     error_css_class = 'is-invalid'
     required_css_class = 'is-valid'
-
-    field_order = ('email', 'username',
-                   'first_name', 'last_name', 'password1', 'password2')
-
-    username = forms.CharField(label='Имя пользователя',
-                               min_length=4,
-                               widget=forms.widgets.TextInput(attrs={'placeholder': 'Ivan',
-                                                                     'class': 'form-control'}))
-    email = forms.EmailField(label='Email',
-                             error_messages={'invalid': 'Введите корректный email'},
-                             widget=forms.widgets.EmailInput(attrs={'placeholder': 'ivan@mail.com',
-                                                                    'class': 'form-control'}))
-    first_name = forms.CharField(label='Имя',
-                                 min_length=2,
-                                 validators=[validators.RegexValidator(regex='^([A-zА-я])+$')],
-                                 error_messages={'invalid': 'Имя может содержать только Латиницу или Кириллицу'},
-                                 widget=forms.widgets.TextInput(attrs={'placeholder': 'Иван',
-                                                                       'class': 'form-control'}), )
-    last_name = forms.CharField(label='Фамилия',
-                                min_length=2,
-                                validators=[validators.RegexValidator(regex='^([A-zА-я])+$')],
-                                error_messages={'invalid': 'Фамилия может содержать только Латиницу или Кириллицу'},
-                                widget=forms.widgets.TextInput(attrs={'placeholder': 'Иванов',
-                                                                      'class': 'form-control'}))
-    password1 = forms.CharField(label='Пароль',
-                                min_length=6,
-                                widget=forms.widgets.PasswordInput(attrs={'class': 'form-control'}))
-    password2 = forms.CharField(label='Повторить пароль',
-                                min_length=6,
-                                widget=forms.widgets.PasswordInput(attrs={'class': 'form-control'}))
+    field_order = ('email', 'username', 'first_name', 'last_name', 'password1', 'password2')
+    username = forms.CharField(
+        label='Имя пользователя',
+        min_length=4,
+        widget=forms.widgets.TextInput(
+            attrs={
+                'placeholder': 'Ivan',
+                'class': 'form-control'
+            }
+        )
+    )
+    email = forms.EmailField(
+        label='Email',
+        error_messages={'invalid': 'Введите корректный email'},
+        widget=forms.widgets.EmailInput(
+            attrs={
+                'placeholder': 'ivan@mail.com',
+                'class': 'form-control'
+            }
+        )
+    )
+    first_name = forms.CharField(
+        label='Имя',
+        min_length=2,
+        validators=[validators.RegexValidator(regex='^([A-zА-я])+$')],
+        error_messages={'invalid': 'Имя может содержать только Латиницу или Кириллицу'},
+        widget=forms.widgets.TextInput(
+            attrs={
+                'placeholder': 'Иван',
+                'class': 'form-control'
+            }
+        )
+    )
+    last_name = forms.CharField(
+        label='Фамилия',
+        min_length=2,
+        validators=[validators.RegexValidator(regex='^([A-zА-я])+$')],
+        error_messages={'invalid': 'Фамилия может содержать только Латиницу или Кириллицу'},
+        widget=forms.widgets.TextInput(
+            attrs={
+                'placeholder': 'Иванов',
+                'class': 'form-control'
+            }
+        )
+    )
+    password1 = forms.CharField(
+        label='Пароль',
+        min_length=6,
+        widget=forms.widgets.PasswordInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    password2 = forms.CharField(
+        label='Повторить пароль',
+        min_length=6,
+        widget=forms.widgets.PasswordInput(
+            attrs={'class': 'form-control'}
+        )
+    )
 
     class Meta:
         model = User
-        fields = ('email', 'username', 'first_name',
-                  'last_name', 'password1', 'password2',)
+        fields = ('email', 'username', 'first_name', 'last_name', 'password1', 'password2',)
 
     def clean(self):
         super().clean()
@@ -65,16 +93,21 @@ class FileForm(forms.ModelForm):
         label='Выберите файл',
         help_text='Можно загрузить только doc/docs',
         validators=[
-            validators.FileExtensionValidator(allowed_extensions=('doc', 'docs')),
-            validators.ProhibitNullCharactersValidator()
+            validators.FileExtensionValidator(allowed_extensions=('doc', 'docx')),
         ],
         error_messages={
-            'invalid_extension': 'Этот формат не поддерживается'
-        }
+            'invalid_extension': 'Данный формат файла не поддерживается'
+        },
+        widget=forms.widgets.FileInput(
+            attrs={'class': 'form-control'}
+        )
     )
     is_private = forms.BooleanField(
         label='Приватный',
         required=False,
+        widget=forms.widgets.CheckboxInput(
+            attrs={'class': 'form-check-input'}
+        )
     )
 
     class Meta:

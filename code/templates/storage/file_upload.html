@@ -10,27 +10,29 @@
                 </div>
                 <form method="POST" action="{% url 'file_upload' %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {% for field in form %}
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col"> {{ field.label_tag }}</div>
-                                <div class="col-5 text-right">
-                                    {% if field.help_text %}
-                                        <small>{{ field.help_text }}</small>
-                                    {% endif %}
-                                </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col"> {{ form.file.label_tag }}</div>
+                            <div class="col-5 text-right">
+                                <small>{{ form.file.help_text }}</small>
                             </div>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="alert alert-danger mt-1">
-                                    {% for err in field.errors %}
-                                        {{ err }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
                         </div>
-                    {% endfor %}
-                    <input class="btn btn-secondary" type="submit" value="Создать">
+                        {{ form.file }}
+                        <div class="form-check form-switch">
+                            {{ form.is_private }}
+                            <label class="form-check-label" for="flexSwitchCheckDefault">
+                                {{ form.is_private.label }}
+                            </label>
+                        </div>
+                        {% if form.file.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for err in form.file.errors %}
+                                    {{ err }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <input class="btn btn-secondary" type="submit" value="Загрузить">
                 </form>
             </div>
             <div class="col"></div>

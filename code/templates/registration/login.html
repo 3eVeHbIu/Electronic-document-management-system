@@ -2,49 +2,49 @@
 {% block title %}Вход{% endblock title %}
 {% block content %}
     {% if user.is_authenticated %}
-                <div class="col-auto-md align-middle GameRoboText">
-                    <p>Вы уже авторизовались</p>
-                </div>
+        <div class="col-auto-md align-middle GameRoboText">
+            <p>Вы уже авторизовались</p>
+        </div>
     {% else %}
-                <div class="col"></div>
-                <div class="col-md-auto alert alert-secondary">
-                    {% if form.errors %}
-                        <div class="alert alert-danger text-center col-12" role="alert">
-                            Неверно указано имя пользователя или пароль
-                        </div>
-                    {% endif %}
-                    <form method="POST" action="{% url 'login' %}">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col">
-                                    {{ form.username.label_tag }}
-                                </div>
-                                <div class="col-md-auto">
-                                    {{ form.username }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="id_password">Пароль: </label>
-                                </div>
-                                <div class="col-md-auto">
-                                    {{ form.password }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row pt-2">
-                            <div class="col-md-auto">
-                                <input class="btn btn-secondary" type="submit" value="Войти">
-                            </div>
-                            <div class="col">
-                                   <a href="{% url 'password_reset' %}">Забыли пароль?</a>
-                            </div>
-                        </div>
-                    </form>
+        <div class="col"></div>
+        <div class="col-md-auto alert alert-secondary">
+            {% if form.errors %}
+                <div class="alert alert-danger text-center col-12" role="alert">
+                    Неверно указано имя пользователя или пароль
                 </div>
-                <div class="col"></div>
+            {% endif %}
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {{ form.username.label_tag }}
+                        </div>
+                        <div class="col-md-auto">
+                            {{ form.username }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            <label for="id_password">Пароль: </label>
+                        </div>
+                        <div class="col-md-auto">
+                            {{ form.password }}
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-md-auto">
+                        <input class="btn btn-secondary" type="submit" value="Войти">
+                    </div>
+                    <div class="col">
+                        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col"></div>
     {% endif %}
 {% endblock %}
