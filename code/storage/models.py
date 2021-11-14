@@ -70,6 +70,7 @@ class Files(models.Model):
     )
 
     class Meta:
+        unique_together = ('owner', 'original_filename')
         verbose_name_plural = 'Файлы'
         verbose_name = 'Файл'
         ordering = ['-editing_date_time']

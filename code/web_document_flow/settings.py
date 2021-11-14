@@ -4,7 +4,7 @@ import config
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = [
     'django.nginx',
 ]
@@ -63,9 +63,10 @@ LOGOUT_REDIRECT_URL = '/'
 
 # Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+if DEBUG:
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+else:
+    STATIC_ROOT = BASE_DIR / 'static'
 
 # Media files
 MEDIA_ROOT = BASE_DIR / 'files/doc'

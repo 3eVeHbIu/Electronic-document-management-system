@@ -1,0 +1,9 @@
+{% extends "includes/wrapper.html" %}
+
+{% block title %}
+    {% if title %}{{ title }}{% else %}Cтраница не найдена{% endif %}
+{% endblock title %}
+
+{% block content %}
+    <h1>404 Page not found :(</h1>
+{% endblock %}
