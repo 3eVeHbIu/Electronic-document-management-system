@@ -6,10 +6,13 @@
 
 {% block content %}
     <div class="col-1"></div>
-    <div class="col-6 text-white bg-dark">
+    <div class="col-5 text-white bg-dark">
         Имя файла
     </div>
     <div class="col-2 text-white bg-dark">
+        Сигнатура
+    </div>
+    <div class="col-1 text-white bg-dark">
         Владелец
     </div>
     <div class="col-2 text-white bg-dark">
@@ -20,12 +23,29 @@
         <div class="container-fluid padding">
             <div class="row">
                 <div class="col-1"></div>
-                <div class="col-6">
+                <div class="col-5">
                     <a href="{% url 'download' %}?file={{ file.original_filename }}&owner={{ file.owner }}"
                        class="link-dark">{{ file.original_filename }}</a>
                 </div>
                 <div class="col-2">
+                    {% if file.signature %}
+                        <a href="{% url 'download' %}?file={{ file.original_filename }}&owner={{ file.owner }}&signature=True" class="link-dark">
+                            Скачать сигнатуру
+                        </a>
+                    {% elif user == file.owner %}
+                        <a href="{% url 'sign_file' %}?file={{ file.original_filename }}&owner={{ file.owner }}" class="link-dark">
+                            Подписать
+                        </a>
+                    {% endif %}
+                </div>
+                <div class="col-1">
+                    {% if file.is_signed %}
+                    <a href="{% url 'download' %}?user={{ file.owner }}" class="link-dark">
+                            {{ file.owner }}
+                    </a>
+                    {% else %}
                     {{ file.owner }}
+                    {% endif %}
                 </div>
                 <div class="col-2">
                     {{ file.add_date_time }}

@@ -11,7 +11,7 @@ def doc_path(instance, filename):
 
 
 def signature_path(instance, filename):
-    return f'user_{instance.owner.id}/doc/{splitext(instance.file.file.split("/")[-1])[0]}.signature'
+    return f'user_{instance.owner.id}/doc/{splitext(instance.file.file.name.split("/")[-1])[0]}.signature'
 
 
 def private_key_path(instance, filename):

@@ -6,10 +6,10 @@
 
 {% block content %}
     <div class="col-1"></div>
-    <div class="col-6 text-white bg-dark">
+    <div class="col-5 text-white bg-dark">
         Имя файла
     </div>
-    <div class="col-1 text-white bg-dark">
+    <div class="col-2 text-white bg-dark">
         Сигнатура
     </div>
     <div class="col-2 text-white bg-dark">
@@ -23,19 +23,18 @@
         <div class="container-fluid padding">
             <div class="row">
                 <div class="col-1"></div>
-                <div class="col-6">
+                <div class="col-5">
                     <a href="{% url 'download' %}?file={{ file.original_filename }}&owner={{ file.owner }}" class="link-dark">
                         {{ file.original_filename }}
                     </a>
                 </div>
-                <div class="col-1">
+                <div class="col-2">
                     {% if file.signature %}
-                        {#                        Скачать сигнатуру #}
-                        <a href="{% url 'download' %}?file={{ file.signature }}&owner={{ file.owner }}" class="link-dark">
+                        <a href="{% url 'download' %}?file={{ file.original_filename }}&owner={{ file.owner }}&signature=True" class="link-dark">
                             Скачать сигнатуру
                         </a>
                     {% else %}
-                        <a href="{# {% url 'sign' %} #}?file={{ file.original_filename }}&owner={{ file.owner }}" class="link-dark">
+                        <a href="{% url 'sign_file' %}?file={{ file.original_filename }}&owner={{ file.owner }}" class="link-dark">
                             Подписать
                         </a>
                     {% endif %}

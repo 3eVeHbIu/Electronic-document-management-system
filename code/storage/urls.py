@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import index, registration, upload_file, show_not_private_files, show_owner_files, download_file, \
-    upload_keys, generate_keys, show_keys, delete_keys
+    upload_keys, generate_keys, show_keys, delete_keys, sign_file
 
 urlpatterns = [
     path('', index, name='index'),
@@ -14,4 +14,5 @@ urlpatterns = [
     path('generate_keys/', generate_keys, name='generate_keys'),
     path('show_keys/', show_keys, name='show_keys'),
     path('delete_keys/', delete_keys, name='delete_keys'),
+    path('sign_file/', sign_file, name='sign_file')
 ]
