@@ -1,0 +1,32 @@
+{% extends "includes/wrapper.html" %}
+
+{% block title %}
+    {% if title %}{{ title }}{% else %}Мои ключи{% endif %}
+{% endblock title %}
+
+{% block content %}
+    <div class="row pb-3">
+        <div class="col-2"></div>
+        <div class="col">
+            <p>Публичный ключ:</p>
+            {{ public }}
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    <div class="row  pb-3">
+        <div class="col-2"></div>
+        <div class="col">
+            <p>Приватный ключ:</p>
+            {{ private }}
+        </div>
+        <div class="col-2"></div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col">
+            <a href="{% url 'delete_keys' %}" class="btn btn-secondary"> Удалить ключи </a>
+        </div>
+        <div class="col-2"></div>
+    </div>
+{% endblock %}

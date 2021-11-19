@@ -113,3 +113,25 @@ class FileForm(forms.ModelForm):
     class Meta:
         model = Files
         fields = ('file', 'is_private')
+
+
+class KeysForm(forms.ModelForm):
+    field_order = ('private', 'public')
+    private_key = forms.FileField(
+        label='Выберите приватный ключ',
+        help_text='Приватный ключ',
+        widget=forms.widgets.FileInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    public_key = forms.FileField(
+        label='Выберите приватный ключ',
+        help_text='Публичный ключ',
+        widget=forms.widgets.FileInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+
+    class Meta:
+        model = Files
+        fields = ('private_key', 'public_key')

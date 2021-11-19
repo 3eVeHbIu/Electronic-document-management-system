@@ -1,0 +1,70 @@
+{% extends "includes/wrapper.html" %}
+
+{% block title %}
+    {% if title %}{{ title }}{% else %}Загрузка ключей{% endif %}
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <h2 class="text-center">Страница загрузки файла</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <h5 class="text-left">Загрузить ключи</h5>
+            </div>
+            <div class="col-2">
+                <h5 class="text-center">или</h5>
+            </div>
+            <div class="col-4">
+                <h5 class="text-right">Автоматически сгенерировать ключи</h5>
+            </div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+                <form method="POST" action="{% url 'upload_keys' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col"> {{ form.private_key.label_tag }}</div>
+                            <div class="col-5 text-right">
+                                <small>{{ form.private_key.help_text }}</small>
+                            </div>
+                        </div>
+                        {{ form.private_key }}
+                        <div class="row">
+                            <div class="col"> {{ form.public_key.label_tag }}</div>
+                            <div class="col-5 text-right">
+                                <small>{{ form.public_key.help_text }}</small>
+                            </div>
+                        </div>
+                        {{ form.public_key }}
+
+                        {% if form.file.errors %}
+                            <div class="alert alert-danger mt-1">
+                                {% for err in form.file.errors %}
+                                    {{ err }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <input class="btn btn-secondary" type="submit" value="Загрузить">
+                </form>
+            </div>
+            <div class="col-2"></div>
+            <div class="col-4">
+                <a href="{% url 'generate_keys' %}" class="btn btn-secondary"> Сгенерировать </a>
+            </div>
+            <div class="col-1"></div>
+        </div>
+    </div>
+    </div>
+    </div>
+{% endblock %}

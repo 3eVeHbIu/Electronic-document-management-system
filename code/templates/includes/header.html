@@ -7,15 +7,29 @@
         {% endif %}
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="{% url 'files' %}" class="nav-link">Общие файлы</a>
-                </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a href="{% url 'user_files' %}" class="nav-link">Мои файлы</a>
+                        <div class="dropdown">
+                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                Файлы
+                           </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a href="{% url 'upload_file' %}" class="dropdown-item">Загрузить файл</a></li>
+                                <li><a href="{% url 'user_files' %}" class="dropdown-item">Мои файлы</a></li>
+                                <li><a href="{% url 'files' %}" class="dropdown-item">Общие файлы</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'file_upload' %}" class="nav-link">Загрузить файл</a>
+                        <div class="dropdown">
+                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                Ключи
+                           </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                <li><a href="{% url 'upload_keys' %}" class="dropdown-item">Загрузить ключи</a></li>
+                                <li><a href="{% url 'show_keys' %}" class="dropdown-item">Посмотреть ключи</a></li>
+                            </ul>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a href="{% url 'logout' %}" class="nav-link">Выйти</a>

@@ -6,31 +6,26 @@ from django.core import validators
 from django.db import models
 
 
-class Themes(models.Model):
-    name = models.CharField(
-        max_length=32,
-        db_index=True,
-        verbose_name='Тематика',
-    )
-
-    class Meta:
-        verbose_name_plural = 'Тематики'
-        verbose_name = 'Тематика'
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
+def doc_path(instance, filename):
+    return f'user_{instance.owner.id}/doc/{datetime.now().timestamp()}{splitext(filename)[1]}'
 
 
-def get_timestamp_path(instance, filename):
-    return '%s%s' % (datetime.now().timestamp(), splitext(filename)[1])
+def signature_path(instance, filename):
+    return f'user_{instance.owner.id}/doc/{splitext(instance.file.file.split("/")[-1])[0]}.signature'
+
+
+def private_key_path(instance, filename):
+    return f'user_{instance.owner.id}/keys/key'
+
+
+def public_key_path(instance, filename):
+    return f'user_{instance.owner.id}/keys/key.pub'
 
 
 class Files(models.Model):
     owner = models.ForeignKey(
         User,
         verbose_name='Владелец',
-        help_text='Введите название новости',
         editable=False,
         on_delete=models.CASCADE,
     )
@@ -51,7 +46,7 @@ class Files(models.Model):
     file = models.FileField(
         default=None,
         verbose_name='Файл',
-        upload_to=get_timestamp_path,
+        upload_to=doc_path,
         blank=False,
         null=False
     )
@@ -59,6 +54,18 @@ class Files(models.Model):
         default=False,
         null=False,
         blank=False,
+    )
+    is_signed = models.BooleanField(
+        default=False,
+        null=False,
+        blank=False,
+    )
+    signature = models.FileField(
+        default=None,
+        verbose_name='Сигнатура',
+        upload_to=signature_path,
+        blank=True,
+        null=True,
     )
     add_date_time = models.DateTimeField(
         verbose_name='Дата добавления файла в систему',
@@ -75,3 +82,32 @@ class Files(models.Model):
         verbose_name = 'Файл'
         ordering = ['-editing_date_time']
         get_latest_by = '-add_date_time'
+
+
+class Keys(models.Model):
+    owner = models.ForeignKey(
+        User,
+        verbose_name='Владелец',
+        editable=False,
+        on_delete=models.CASCADE,
+    )
+    private_key = models.FileField(
+        default=None,
+        verbose_name='Приватный ключ',
+        upload_to=private_key_path,
+        blank=False,
+        null=False
+    )
+    public_key = models.FileField(
+        default=None,
+        verbose_name='Публичный ключ',
+        upload_to=public_key_path,
+        blank=False,
+        null=False
+    )
+
+    class Meta:
+        verbose_name_plural = 'ключи'
+        verbose_name = 'ключ'
+        ordering = ['owner']
+        get_latest_by = '-owner'

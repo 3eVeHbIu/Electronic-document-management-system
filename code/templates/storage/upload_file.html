@@ -1,5 +1,9 @@
 {% extends "includes/wrapper.html" %}
-{% block title %}Создание новости{% endblock title %}
+
+{% block title %}
+    {% if title %}{{ title }}{% else %}Загрузка файлов{% endif %}
+{% endblock title %}
+
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -8,7 +12,7 @@
                 <div class="mb-3">
                     <h2 class="text-center">Страница загрузки файла</h2>
                 </div>
-                <form method="POST" action="{% url 'file_upload' %}" enctype="multipart/form-data">
+                <form method="POST" action="{% url 'upload_file' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
                         <div class="row">
