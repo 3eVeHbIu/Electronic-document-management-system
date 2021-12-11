@@ -1,17 +1,16 @@
 import os
 import urllib
 
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
 from django.conf import settings
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
-
-from Crypto.PublicKey import RSA
-from Crypto.Hash import SHA256
-from Crypto.Signature import pkcs1_15
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect
 
 from .forms import UserForm, FileForm, KeysForm
 from .models import Files, Keys
@@ -29,9 +28,18 @@ def registration(request):
         if request.method == 'POST':
             form = UserForm(request.POST)
             if form.is_valid():
-                user = form.save()
-                login(request, user)
-                return redirect('index')
+                user = User()
+                user.username = form.cleaned_data.get('username')
+                user.email = form.cleaned_data.get('email')
+                user.first_name = form.cleaned_data.get('first_name')
+                user.last_name = form.cleaned_data.get('last_name')
+                user.password = make_password(form.cleaned_data.get('password1'))
+                group = form.cleaned_data.get('group')
+                user.save()
+                user.groups.add(group)
+                user.save()
+                # login(request, user)
+                return redirect('login')
             else:
                 errors = UserForm.errors
                 context = {'form': form, 'errors': errors}
@@ -54,25 +62,25 @@ def upload_file(request):
             return redirect('index')
         else:
             errors = UserForm.errors
-            context = {'form': form, 'errors': errors}
+            context = {'form': form, 'errors': errors, 'group': request.user.groups.all()[0]}
             return render(request, 'storage/upload_file.html', context)
     else:
         form = FileForm()
-        context = {'form': form}
+        context = {'form': form, 'group': request.user.groups.all()[0]}
         return render(request, 'storage/upload_file.html', context)
 
 
 @login_required
 def show_owner_files(request):
     files = Files.objects.filter(owner=request.user.id)
-    context = {'files': files}
+    context = {'files': files, 'group': request.user.groups.all()[0]}
     return render(request, 'storage/owner_files.html', context)
 
 
 @login_required
 def show_not_private_files(request):
-    files = Files.objects.filter(is_private=False)
-    context = {'files': files}
+    files = Files.objects.filter(owner__groups=request.user.groups.all()[0])
+    context = {'files': files, 'group': request.user.groups.all()[0]}
     return render(request, 'storage/files.html', context)
 
 
@@ -136,11 +144,11 @@ def upload_keys(request):
             return redirect('show_keys')
         else:
             errors = UserForm.errors
-            context = {'form': form, 'errors': errors}
+            context = {'form': form, 'errors': errors, 'group': request.user.groups.all()[0]}
             return render(request, 'storage/upload_keys.html', context)
     else:
         form = KeysForm()
-        context = {'form': form}
+        context = {'form': form, 'group': request.user.groups.all()[0]}
         return render(request, 'storage/upload_keys.html', context)
 
 
@@ -166,7 +174,7 @@ def show_keys(request):
             private = f.read().decode()
         with open(public_path, 'rb') as f:
             public = f.read().decode()
-        context = {'private': private, 'public': public}
+        context = {'private': private, 'public': public, 'group': request.user.groups.all()[0]}
         return render(request, 'storage/show_keys.html', context)
     else:
         return redirect('upload_keys')
@@ -237,4 +245,5 @@ def get_correct_object(owner):
 
 
 def not_found_response(request, exception):
-    return render(request, 'storage/404.html')
+    context = {'group': request.user.groups.all()[0]}
+    return render(request, 'storage/404.html', context)

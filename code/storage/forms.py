@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core import validators
 from django.core.exceptions import ValidationError
 
@@ -9,7 +9,7 @@ from .models import Files
 class UserForm(forms.ModelForm):
     error_css_class = 'is-invalid'
     required_css_class = 'is-valid'
-    field_order = ('email', 'username', 'first_name', 'last_name', 'password1', 'password2')
+    field_order = ('email', 'username', 'first_name', 'last_name', 'group', 'password1', 'password2')
     username = forms.CharField(
         label='Имя пользователя',
         min_length=4,
@@ -54,6 +54,12 @@ class UserForm(forms.ModelForm):
             }
         )
     )
+
+    group = forms.ModelChoiceField(
+        label='Отделение',
+        queryset=Group.objects.all(),
+    )
+
     password1 = forms.CharField(
         label='Пароль',
         min_length=6,
